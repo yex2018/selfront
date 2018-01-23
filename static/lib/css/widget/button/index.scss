@@ -1,0 +1,13 @@
+@import '../../base/variable/base-color';
+
+#app{
+	.weui-btn{
+		// border-radius: 0;
+		&:after{
+			border: none;
+		}
+	}
+	.weui-btn_primary{
+		background-color: $text-green-color;
+	}
+}

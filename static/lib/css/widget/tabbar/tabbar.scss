@@ -1,0 +1,28 @@
+@import '../../base/variable/base-color';
+
+#app{
+	.weui-tabbar{
+		background-color: #fff;
+		.weui-tabbar__item{
+			padding-bottom: 2px;
+			.weui-tabbar__icon,.weui-tabbar__label{
+				color: #575656;
+			}
+		}
+		.weui-bar__item_on{
+			.weui-tabbar__icon,.weui-tabbar__label{
+				color: $text-green-color;
+			}
+		}
+		.weui-tabbar__icon{
+			.iconfont{
+				font-size: 25px;
+			}
+		}
+		.weui-tabbar__label{
+			span{
+				font-size: 14px;
+			}
+		}
+	}
+}

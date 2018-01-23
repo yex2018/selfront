@@ -1,0 +1,140 @@
+{
+	"res":"0",
+	"msg":"",
+	"data":{
+		"child": {
+			"birth": "2011-04-02",
+			"gender": "Female",
+			"id": "1507564725",
+			"name": "示例儿童"
+		},
+		"evaluation_time": "2017-10-10 16:19:06",
+		"key_name": "social_skill",
+		"report_time": "2017-11-17 10:12:14",
+		"result": {
+			"f_index": "0",
+			"level": {
+				"dimension": [
+					{
+						"level": "低于平均水平",
+						"name": "communication"
+					},
+					{
+						"level": "平均水平",
+						"name": "cooperation"
+					},
+					{
+						"level": "低于平均水平",
+						"name": "assertion"
+					},
+					{
+						"level": "平均水平",
+						"name": "responsibility"
+					},
+					{
+						"level": "平均水平",
+						"name": "empathy"
+					},
+					{
+						"level": "平均水平",
+						"name": "engagement"
+					},
+					{
+						"level": "平均水平",
+						"name": "selfcontrol"
+					}
+				],
+				"percent_combined": "7",
+				"percent_gender": "5",
+				"total": "低于平均水平"
+			},
+			"raw_score": {
+				"68lower": "67",
+				"68upper": "74",
+				"95lower": "63",
+				"95upper": "78",
+				"dimension": [
+					{
+						"name": "communication",
+						"score": "10"
+					},
+					{
+						"name": "cooperation",
+						"score": "9"
+					},
+					{
+						"name": "assertion",
+						"score": "8"
+					},
+					{
+						"name": "responsibility",
+						"score": "10"
+					},
+					{
+						"name": "empathy",
+						"score": "10"
+					},
+					{
+						"name": "engagement",
+						"score": "15"
+					},
+					{
+						"name": "selfcontrol",
+						"score": "9"
+					}
+				],
+				"total": "71"
+			},
+			"rpt_score": {
+				"68lower": "48",
+				"68upper": "53",
+				"95lower": "45",
+				"95upper": "56",
+				"dimension": [
+					{
+						"name": "communication",
+						"score": "47"
+					},
+					{
+						"name": "cooperation",
+						"score": "50"
+					},
+					{
+						"name": "assertion",
+						"score": "38"
+					},
+					{
+						"name": "responsibility",
+						"score": "55"
+					},
+					{
+						"name": "empathy",
+						"score": "55"
+					},
+					{
+						"name": "engagement",
+						"score": "71"
+					},
+					{
+						"name": "selfcontrol",
+						"score": "42"
+					}
+				],
+				"total": "51"
+			},
+			"sdd_score": {
+				"68lower": "74",
+				"68upper": "80",
+				"95lower": "71",
+				"95upper": "83",
+				"total": "77"
+			}
+		},
+		"user": {
+			"gender": "Male",
+			"name": "示例家长",
+			"role": "Father's father"
+		}
+	}
+
+}

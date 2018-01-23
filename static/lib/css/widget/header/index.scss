@@ -1,0 +1,19 @@
+@import '../../base/variable/base-color';
+
+#app{
+	.vux-header{
+		background-color: #fff;
+		.left-arrow{
+			&::before{
+				border-color: $text-green-color;
+			}
+		}
+		.vux-header-title{
+			color: $text-black-color;
+		}
+		.vux-header-back{
+			color: $text-green-color;
+		}
+
+	}
+}

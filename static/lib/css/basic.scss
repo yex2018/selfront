@@ -1,0 +1,156 @@
+@import './base/mixin/baseMixin';
+@import './base/variable/base-color';
+@import './base/reset.css';
+@import './widget/fn.scss';
+
+*{
+	@include prefix(box-sizing,border-box)
+	&::before{
+		@include prefix(box-sizing,border-box)
+	}
+	&::after{
+		@include prefix(box-sizing,border-box)
+	}
+}
+
+.bgGreen{
+	background-color: $text-green-color;
+}
+
+.bgYellow{
+	background-color: $text-yellow-color;
+}
+
+.bgBlue{
+	background-color: $text-blue-color;
+}
+
+.text-red{
+	color: $text-red-color;
+}
+
+.text-font{
+	color: $text-black-color;
+}
+
+.text-gray{
+	color: $text-gray-color;
+}
+
+.text-green{
+	color: $text-green-color;
+}
+
+.text-yellow{
+	color: $text-yellow-color;
+}
+
+.text-blue{
+	color: $text-blue-color
+}
+
+.activeBg{
+	&:active{
+		background-color: $BgColorActive;
+	}
+}
+
+.btn-container{
+	padding:0.8rem 15px 0;
+	button{
+		height: 46px;
+		font-size: 20px;
+	}
+}
+
+.absCenter{
+	position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+}
+
+.p-container{
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	width: 10rem;
+}
+
+.p-com-container,.p-com-wrapper{
+	width: 100%;
+	overflow: scroll;
+	-webkit-overflow-scrolling: touch;
+	::-webkit-scrollbar {
+		width: 0;
+		display: none;
+	}
+	::-webkit-scrollbar-button:horizontal:decrement:hover {
+		display: none;
+		width: 0;
+	}
+}
+
+.p-com-container{
+	height: calc(100% - 59px);
+}
+
+.p-com-wrapper{
+	height: calc(100% - 46px);
+}
+
+// 固定在页面底部的方形按钮
+.ass-b-btn{
+	position: absolute;
+	bottom: 0;
+	color: #fff;
+	background-color: $text-green-color;
+	height: 1.2rem;
+	width: 10rem;
+	line-height: 1.2rem;
+	text-align: center;
+	font-size: 0.426667rem;
+	&:active{
+		background-color: $text-green-active-color;
+	}
+}
+
+// 所有cell箭头写死
+.weui-cell_select .weui-cell__bd:after,.weui-cell__ft:after{
+	width: 0.266667rem !important;height: 0.266667rem !important;
+}
+
+.weui-cell_select .weui-cell__bd:after{right: 0.08rem !important;}
+
+.router-view {
+	width: 100%;
+}
+.pixel-pop-out-enter-active,
+.pixel-pop-out-leave-active,
+.pixel-pop-in-enter-active,
+.pixel-pop-in-leave-active {
+	will-change: transform;
+	transition: all 500ms ease;
+	height: 100%;
+	position: absolute;
+	backface-visibility: hidden;
+	perspective: 1000;
+}
+.pixel-pop-out-enter {
+	opacity: 0;
+	transform: translate3d(-100%, 0, 0);
+}
+.pixel-pop-out-leave-active {
+	opacity: 0;
+	transform: translate3d(100%, 0, 0);
+}
+.pixel-pop-in-enter {
+	opacity: 0;
+	transform: translate3d(100%, 0, 0);
+}
+.pixel-pop-in-leave-active {
+	opacity: 0;
+	transform: translate3d(-100%, 0, 0);
+}
