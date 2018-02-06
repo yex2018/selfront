@@ -39,12 +39,8 @@
 		methods:{
 			loadInfo(){
 				let vm = this,body = {
-					evaluation_id:vm.$route.query.evaluation_id,		
-					user_id:vm.$route.query.user_id,	
-					child_id:vm.$route.query.child_id,
-					typeid:vm.$route.query.typeid, //生成：0 查看：1
-					openid:vm.getCookie('openid'),
 					user_evaluation_id:vm.$route.query.user_evaluation_id,
+					typeid:vm.$route.query.typeid, //生成：0 查看：1	
 				}
 				document.title = '测评结果'
 				vm.isLoading = true
@@ -61,10 +57,8 @@
             },
             getReport(){
 				let vm = this,body = {
-					user_evaluation_id:vm.allInfo.user_evaluation_id,
-					evaluation_id:vm.$route.query.evaluation_id,
-					openid:vm.getCookie('openid'),
-					user_id:vm.$route.query.user_id
+					user_evaluation_id:vm.$route.query.user_evaluation_id,
+					openid:vm.getCookie('openid')
 				}
 				api.qryReports(body).then(resp=>{
 					if(resp.data.res==0){

@@ -32,8 +32,7 @@
 			/* @desc:获取儿童测评报告列表 */
 			getList(){
 				let vm = this , body = {
-					child_id:vm.$route.query.child_id,
-					user_id:vm.getMsg('base','userInfo').user_id
+					child_id:vm.$route.query.child_id
 				}
 				api.qryEvaluationByChildId(body).then(resp=>{
 					if(resp.data.res=='0'){
@@ -52,6 +51,8 @@
 				/* @desc:暂时只有一个结果模板 */
 				if(item.key_name=='skill'){
 					vm.$router.push({path:'/assResult',query:body})	
+				}else{
+					vm.$router.push({path:'/assNoTemplate',query:body})
 				}
 			}
 		},

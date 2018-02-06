@@ -46,6 +46,7 @@
 									evaluation_id:vm.assInfo.evaluation_id,
 									assName:vm.assInfo.name,
 									keyname:vm.assInfo.key_name,
+									maxIndex:vm.assInfo.maxIndex,
 									price:vm.assInfo.price
 								}
 								vm.$router.push({path:'assChild',query:body})
@@ -53,10 +54,7 @@
 								vm.$vux.confirm.show({
 								  	// 组件除show外的属性
 								  	title: '提示',
-        							content: '您还未绑定儿童信息，是否前往绑定',
-								  	onCancel () {
-								    	
-								  	},
+        							content: '您还未添加儿童信息，是否前往添加',
 								  	onConfirm () {
 								  		vm.$router.push({path:'/mineBaby'})
 								  	}

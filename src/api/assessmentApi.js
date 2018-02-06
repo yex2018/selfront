@@ -11,6 +11,10 @@ export function getAssDetail(body) {
 	return fetch(jsonUrl+'static/json/AssessmentDetail.json')
 }
 
+export function addUserEvaluation(body){
+	return postData(baseUrl+'userevaluation',body)
+}
+
 export function sendCode(body) {
 	return fetch(baseUrl+'sendcode',body)
 }

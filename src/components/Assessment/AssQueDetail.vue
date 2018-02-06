@@ -2,13 +2,13 @@
 	<div class="ass-que-detail" v-if="endLoad">
 		<div>
 			<div class="cent">
-				<div class="num">{{Info.question_index}}/{{Info.maxIndex}}</div>
+				<div class="num">{{curQuestionIndex}}/{{maxIndex}}</div>
 				<pro-bar class="pro" :percent="percent"></pro-bar>
 			</div>
 			
 			<div class="ass-que" v-if="questions.dimensions.length==1">
 				<div class="ques">
-					{{Info.question_index}}、{{questions.question}}
+					{{curQuestionIndex}}、{{questions.question}}
 				</div>
 				<div v-for="(item,index) in questions.dimensions" @click="getItem(item,index)">
 					<p class="dimension">{{item.dimension}}</p>
@@ -19,7 +19,7 @@
 			</div>
 			<div class="ass-que" v-if="questions.dimensions.length>1">
 				<div class="ques">
-					{{Info.question_index}}、{{questions.question}}
+					{{curQuestionIndex}}、{{questions.question}}
 				</div>
 				<div v-for="(item,index) in questions.dimensions">
 					<p class="dimension">{{item.dimension}}</p>
@@ -31,21 +31,21 @@
 			</div>
 
 			<div class="btn-container" v-if="questions.dimensions.length==1">
-		    	<div v-if="Info.question_index!=1&&Info.maxIndex!=Info.question_index" class="btn_g">
+		    	<div v-if="curQuestionIndex!=1&&maxIndex!=curQuestionIndex" class="btn_g">
 		    		<span class="first_btn" @click="prev">上一题</span>
 		    	</div>
-		    	<div v-if="Info.question_index==Info.maxIndex" class="btn_g">
+		    	<div v-if="curQuestionIndex==maxIndex" class="btn_g">
 		    		<span @click="prev">上一题</span>
 		    		<span class="submit activeBg" @click="submit">查看报告</span>
 		    	</div>
 		    </div>
 		    <div class="btn-container" v-if="questions.dimensions.length>1">
-		    	<span v-if="Info.question_index==1&&Info.maxIndex>1" class="first_btn" @click="next">下一题</span>
-		    	<div v-if="Info.question_index!=1&&Info.maxIndex!=Info.question_index" class="btn_g">
+		    	<span v-if="curQuestionIndex==1&&maxIndex>1" class="first_btn" @click="next">下一题</span>
+		    	<div v-if="curQuestionIndex!=1&&maxIndex!=curQuestionIndex" class="btn_g">
 		    		<span @click="prev">上一题</span>
 		    		<span @click="next">下一题</span>
 		    	</div>
-		    	<div v-if="Info.question_index==Info.maxIndex" class="btn_g">
+		    	<div v-if="curQuestionIndex==maxIndex" class="btn_g">
 		    		<span @click="prev">上一题</span>
 		    		<span class="submit activeBg" @click="submit">查看报告</span>
 		    	</div>
@@ -69,37 +69,49 @@
 				defaultProps:{
 					label:'value',
 					value:'key'
-				}
+				},
+
+				maxIndex:0,
+				curQuestionIndex:0,
+				curQuestionId:0,
+				curUserQuestionId:0
 			}
 		},
 		components:{
 			ProBar,Radio,Group,XHeader
 		},
 		methods:{
-			loadInfo(data){
-				let q_index = this.$route.query.index
+			loadInfo(){
+				let vm = this
+				vm.maxIndex = vm.$route.query.maxIndex
+				vm.curQuestionIndex = vm.$route.query.index
+				document.title = vm.$route.query.assName
+
+				vm.LoadQuestion()
+			},
+			LoadQuestion() {
 				let vm = this,body = {
-					evaluation_id:data?data.evaluation_id:vm.$route.query.evaluation_id,
-					user_id:data?data.user_id:vm.$route.query.user_id,
-					child_id:data?data.child_id:vm.$route.query.child_id,
-					index:data?data.index:q_index
+					user_evaluation_id:vm.$route.query.user_evaluation_id,
+					evaluation_id:vm.$route.query.evaluation_id,
+					question_index:vm.curQuestionIndex
 				}
 				// 重置
 				vm.answer = []
 				vm.curIndex = 0
 				api.getQue(body).then(resp=>{
 					if(resp.data.res == 0){
-						vm.Info = resp.data.data
-						vm.questions = JSON.parse(vm.Info.content)
-						if(vm.Info.answer!=''){
-							vm.InitAnswer(vm.Info.answer,vm.questions)
+						vm.curQuestionId = resp.data.data.question_id
+						vm.curUserQuestionId = resp.data.data.user_question_id
+						vm.questions = JSON.parse(resp.data.data.content)
+						if(resp.data.data.answer!=''){
+							vm.InitAnswer(resp.data.data.answer,vm.questions)
 						}else{
 							vm.questions.dimensions.forEach(item=>{
 								vm.$set(item,'answer','')
 							})
 						}
-						vm.percent = vm.Info.question_index/vm.Info.maxIndex*100
-						if(vm.percent==100&&vm.Info.answer!=''){
+						vm.percent = vm.curQuestionIndex/vm.maxIndex*100
+						if(vm.percent==100&&resp.data.data.answer!=''){
 							vm.setMsg('assDetail','submitFlag',true)
 						}
 						vm.endLoad = true
@@ -113,7 +125,6 @@
 						})
 					}
 				})
-				document.title = vm.$route.query.assName
 			},
 			InitAnswer(result,questions){
 				let vm = this
@@ -169,30 +180,23 @@
 				return false
 			},
 			prev(){
-				let vm = this,body = {
-					evaluation_id:vm.$route.query.evaluation_id,
-					user_id:vm.$route.query.user_id,
-					child_id:vm.$route.query.child_id,
-					index:parseInt(vm.Info.question_index)-1
-				}
-				vm.setMsg('assDetail','curIndex',parseInt(vm.Info.question_index)-1)
-				vm.loadInfo(body)
+				let vm = this
+				vm.curQuestionIndex = vm.curQuestionIndex - 1
+				vm.setMsg('assDetail','curIndex',vm.curQuestionIndex)
+				vm.LoadQuestion()
 			},
 			upAnswer(answer){
 				let vm = this,body = {
+					user_evaluation_id:vm.$route.query.user_evaluation_id,
+					user_question_id:vm.curUserQuestionId,
 					evaluation_id:vm.$route.query.evaluation_id,
-					user_id:vm.$route.query.user_id,
-					child_id:vm.$route.query.child_id,
-					current_question_id	:vm.Info.question_index,
-					text_result:'',
-					report_result:'',
-					answer:answer,
-					maxIndex:vm.Info.maxIndex,
-					question_id:vm.Info.question_id
+					question_id:vm.curQuestionId,
+					question_index:vm.curQuestionIndex,
+					answer:answer
 				}
 				api.updateevalution(body).then(resp=>{
 					if(resp.data.res == '0'){
-						if(vm.Info.question_index==vm.Info.maxIndex){
+						if(vm.curQuestionIndex==vm.maxIndex){
 							/*做完最后一题，等待提交*/
 							let info = vm.getMsg('assDetail','info')
 							vm.setMsg('assDetail','submitFlag',true)
@@ -203,14 +207,10 @@
 				})
 			},
 			getNext(){
-				let vm = this,body = {
-					evaluation_id:vm.$route.query.evaluation_id,
-					user_id:vm.$route.query.user_id,
-					child_id:vm.$route.query.child_id,
-					index:parseInt(vm.Info.question_index)+1
-				}
-				vm.setMsg('assDetail','curIndex',parseInt(vm.Info.question_index)+1)
-				vm.loadInfo(body)
+				let vm = this
+				vm.curQuestionIndex = vm.curQuestionIndex + 1
+				vm.setMsg('assDetail','curIndex',vm.curQuestionIndex)
+				vm.LoadQuestion()
 			},
 			submit(){
 				let vm = this
@@ -239,10 +239,10 @@
 					user_id:vm.$route.query.user_id,
 					child_id:vm.$route.query.child_id,
 					typeid:'0',
-					user_evaluation_id:''
+					user_evaluation_id:vm.$route.query.user_evaluation_id
 				}
 				if(vm.$route.query.keyname=='skill'){
-					vm.$router.replace({path:'/assResult',query:body})	
+					vm.$router.replace({path:'/assResult',query:body})
 				} else{
 					vm.$router.replace({path:'/assNoTemplate',query:body})
 				}

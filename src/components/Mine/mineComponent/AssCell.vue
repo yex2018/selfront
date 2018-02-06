@@ -22,7 +22,7 @@
 		filters:{
 			time_cell(value){
 				if(value){
-					return moment(value).utc().format('YYYY-MM-DD HH:mm:ss')
+					return moment(value).format('YYYY-MM-DD HH:mm:ss')
 				}
 			}
 		}

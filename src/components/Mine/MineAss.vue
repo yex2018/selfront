@@ -90,10 +90,10 @@
 				let vm = this
 				vm.setMsg('assDetail','info',item)
 				let body = {
+					user_evaluation_id:item.user_evaluation_id,
 					evaluation_id:item.evaluation_id,
-					user_id:vm.getMsg('base','userInfo').user_id,
-					child_id:item.child_id,
-					index:0,
+					index:item.current_question_id + 1 > item.maxIndex ? item.maxIndex : item.current_question_id + 1,
+					maxIndex:item.maxIndex,
 					assName:item.name,
 					keyname:item.key_name
 				}

@@ -52,6 +52,7 @@
 </template>
 <script>
 	import {Group,Cell,Selector,XButton,Popup,XInput,Toast} from 'vux'
+	import * as assApi from '../../api/assessmentApi'
 	import * as courseApi from '../../api/courseApi'
 	import * as mineApi from '../../api/mineApi'
 	export default {
@@ -71,7 +72,8 @@
 				coupon:'',
 				isShowSuccess:false,
 				isShowText:false,
-				showMsg:''
+				showMsg:'',
+				uid:0
 			}
 		},
 		components:{Group,Cell,Selector,XButton,Popup,XInput,Toast},
@@ -133,15 +135,33 @@
 				}
 			},
 			startEva(){
-				let vm = this , body = {
-					evaluation_id:vm.$route.query.evaluation_id,
+				let vm = this,body1 = {
+					evaluation_id:parseInt(vm.$route.query.evaluation_id),
 					user_id:vm.getMsg('base','userInfo').user_id,
 					child_id:vm.child.child_id,
-					index:0,
-					assName:vm.$route.query.assName,
-					keyname:vm.$route.query.keyname
 				}
-				vm.$router.push({path:'assQueDetail',query:body})
+
+				assApi.addUserEvaluation(body1).then(resp=>{
+					if(resp.data.res=='0'){
+						vm.uid = resp.data.data.user_evaluation_id
+
+						let body2 = {
+							user_id:vm.getMsg('base','userInfo').user_id,
+							coupon_code:vm.coupon}
+
+						mineApi.useCoupon(body2).then(resp=>{
+							let body3 = {
+								user_evaluation_id:vm.uid,
+								evaluation_id:vm.$route.query.evaluation_id,
+								index:1,
+								maxIndex:vm.$route.query.maxIndex,
+								assName:vm.$route.query.assName,
+								keyname:vm.$route.query.keyname
+							}	
+							vm.$router.push({path:'assQueDetail',query:body3})
+						})						
+					}
+				})
 			},
 			/* @desc:购买测评 */
 			buyAss(){
@@ -179,7 +199,7 @@
 			       },
 			       function(res){     
 			           if(res.err_msg == "get_brand_wcpay_request:ok" ) {
-						   	vm.useCoupon()
+						   	//vm.useCoupon()
 							vm.startEva()
 			           }else{
 			           		vm.$vux.alert.show({
@@ -215,7 +235,7 @@
 				let vm = this, body = {user_id:vm.getMsg('base','userInfo').user_id,coupon_code:vm.coupon}
 				if(vm.child.child_id){
 					if(vm.discountPrice < 0.01) {
-						vm.useCoupon()
+						//vm.useCoupon()
 						vm.startEva()
 					} else {
 						vm.getOrder()

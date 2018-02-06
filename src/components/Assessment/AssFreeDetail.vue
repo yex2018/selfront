@@ -49,6 +49,7 @@
 									evaluation_id:vm.assInfo.evaluation_id,
 									assName:vm.assInfo.name,
 									keyname:vm.assInfo.key_name,
+									maxIndex:vm.assInfo.maxIndex,
 									price:vm.assInfo.price
 								}
 								vm.$router.push({path:'assChild',query:body})
