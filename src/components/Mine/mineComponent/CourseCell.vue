@@ -6,7 +6,7 @@
 				<div class="name">{{cell.name}}</div>
 				<div class="abstract text-font">{{cell.abstract}}</div>
 				<div class="other">
-					<span class="time text-gray">有效期至：{{cell.valid_period|date_cell}}</span>
+					<span class="time text-gray">学习时间：{{cell.course_time|date_cell}}</span>
 					<slot name="btn"></slot>
 				</div>
 			</div>
@@ -22,7 +22,7 @@
 		filters:{
 			date_cell(value){
 				if(value){
-					return moment(value.toString()).format('YYYY-MM-DD')
+					return moment(value).format('YYYY-MM-DD HH:mm:ss')
 				}
 			}
 		}

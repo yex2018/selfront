@@ -31,25 +31,23 @@
 					openid:vm.getCookie('openid')
 				}
 				if(vm.getMsg('base','userInfo')!=null){
-					vm.getCourseList(vm.getMsg('base','userInfo').role)
+					vm.getCourseList()
 				}else{
 					api.qryUser(body).then(resp=>{
 						if(resp.data.res == 0){
 							vm.setMsg('base','userInfo',resp.data.data)
-							vm.getCourseList(vm.getMsg('base','userInfo').role)
+							vm.getCourseList()
 						}else{
-							vm.getCourseList(0)
+							vm.getCourseList()
 						}
 					})
 				}
 			},
 			getCourseList(access){
-				let vm = this,body = {
-					user_access:access
-				}
+				let vm = this
 				vm.courseList = vm.$store.getters.activeCourseList
 				if(vm.courseList.length == 0){
-					vm.$store.dispatch('FETCH_COURSE_LIST',body)
+					vm.$store.dispatch('FETCH_COURSE_LIST',null)
 					.then(resp=>{
 						vm.courseList = vm.$store.getters.activeCourseList
 					})

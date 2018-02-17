@@ -24,14 +24,6 @@ export function getMineCourse(body){
 	return fetch(baseUrl+'QryMyCourse',body)
 }
 
-export function getProvinceList(body){
-	return fetch(baseUrl+"GetProvinces",body)
-}
-
-export function getCityList(body){
-	return fetch(baseUrl+'GetCities',body)
-}
-
 /* @desc:获取儿童与家长关系 */
 export function getRelation(body){
 	return fetch(baseUrl+'GetRelation',body)

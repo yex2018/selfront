@@ -23,7 +23,6 @@
 			<span class="price vux-1px-t">{{courseInfo.price}}元</span>
 			<span class="ass-btn" @click="buy_course">立即购买</span>
 		</div>
-		<!-- <div class="ass-buy-btn" @click="openStudy" v-if="isBuy=='0'">开始学习</div> -->
 	</div>
 </template>
 <script>
@@ -140,7 +139,7 @@
 			           			course_id:vm.courseInfo.course_id,
 			           			user_id:vm.getMsg('base','userInfo').user_id
 			           		}
-			           		api.uppaycourse(body).then(resp=>{
+			           		api.addUserCourse(body).then(resp=>{
 			           			if(resp.data.res=='0'){
 			           				alert('支付成功')
 			           				vm.isBuy = '0'
@@ -150,31 +149,7 @@
 			           		alert('支付失败')
 			           }
 			       }
-			   ); 
-
-			},
-			openStudy(){
-				let vm = this
-				if(vm.getMsg('base','userInfo')!=null){
-					let body = {
-						course_id:vm.courseInfo.course_id,
-						user_id:vm.getMsg('base','userInfo').user_id
-					}
-					/* 发送观看记录 */
-					api.videoPlaybackRecord(body)
-				}else{
-					vm.$vux.confirm.show({
-						// 组件除show外的属性
-						title: '提示',
-        				content: '前往登录',
-						onCancel () {
-								    	
-						},
-						onConfirm () {
-							vm.$router.push({name:'Login'})
-						}
-					})
-				}
+			   );
 			},
 			IsPay(){
 				let vm = this
@@ -183,7 +158,7 @@
 						course_id:vm.$route.query.course_id,
 						user_id:vm.getMsg('base','userInfo').user_id
 					}
-					api.qrypaycourse(body).then(resp=>{
+					api.hasCourse(body).then(resp=>{
 						if(resp.data.res=='0'){
 							vm.isBuy = resp.data.data
 						}

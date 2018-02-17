@@ -127,7 +127,11 @@
 						user_id:vm.getMsg('base','userInfo').user_id
 					}
 					/* 发送学习记录 */
-					api.videoPlaybackRecord(body)
+					api.addUserCourse(body).then(resp=>{
+						if(resp.data.res=='0'){
+							vm.isLearn = 1
+						}
+					})					
 					// vm.showFlag = true
 					// vm.player.play()
 				}else{

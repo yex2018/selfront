@@ -30,25 +30,23 @@
 					openid:vm.getCookie('openid')
 				}
 				if(vm.getMsg('base','userInfo')!=null){
-					vm.getAssList(vm.getMsg('base','userInfo').role)
+					vm.getAssList()
 				}else{
 					api.qryUser(body).then(resp=>{
 						if(resp.data.res == 0){
 							vm.setMsg('base','userInfo',resp.data.data)
-							vm.getAssList(vm.getMsg('base','userInfo').role)
+							vm.getAssList()
 						}else{
-							vm.getAssList(0)
+							vm.getAssList()
 						}
 					})
 				}
 			},
 			getAssList(access){
-				let vm = this,body = {
-					user_access:access
-				}
+				let vm = this
 				vm.assList = vm.$store.getters.activeAssList
 				if(vm.assList.length == 0){
-					vm.$store.dispatch('FETCH_ASSLIST',body)
+					vm.$store.dispatch('FETCH_ASSLIST',null)
 					.then(resp=>{
 						vm.assList = vm.$store.getters.activeAssList
 					})
