@@ -15,14 +15,6 @@ export function addUserEvaluation(body){
 	return postData(baseUrl+'userevaluation',body)
 }
 
-export function sendCode(body) {
-	return fetch(baseUrl+'sendcode',body)
-}
-
-export function login(body){
-	return postData(baseUrl+'login',body)
-}
-
 export function getQue(body){
 	return fetch(baseUrl+'getevalution',body)
 	// return fetch(jsonUrl+'static/json/singleQue.json')

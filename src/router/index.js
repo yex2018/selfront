@@ -4,7 +4,6 @@ import {routerMode} from '../config/env'
 Vue.use(Router)
 
 const AppBase = resolve => require(['../components/AppBase'],resolve)
-const Login = resolve => require(['../components/AppBase/Login'],resolve)
 
 const Assessment = resolve => require(['../components/Assessment'],resolve)
 const AssFreeDetail = resolve => require(['../components/Assessment/AssFreeDetail'],resolve)
@@ -51,7 +50,6 @@ var routerMaps = [
       {name:'BabyInfo',path:'babyInfo',component:BabyInfo},
       {name:'BabyAss',path:'babyAss',component:BabyAss}
   ]},
-  {name:'Login',path:'/login',component:Login},
 	{path: '*', redirect: '/appbase/assessment',component:Assessment}
 ]
 

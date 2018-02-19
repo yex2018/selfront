@@ -62,19 +62,7 @@
 							}
 						}
 					})
-				}else{
-					vm.$vux.confirm.show({
-						// 组件除show外的属性
-						title: '提示',
-        				content: '前往登录',
-						onCancel () {
-								    	
-						},
-						onConfirm () {
-							vm.$router.push({name:'Login'})
-						}
-					})
-				}	
+				}
 			}
 		},
 		created(){
