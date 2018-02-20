@@ -1,12 +1,8 @@
 <!-- 儿童详情-儿童信息 -->
 <template>
 	<div class="baby-info">
-		<div class="headIcon">
-			<img v-if="body.head_portrait" :src="body.head_portrait" alt="" @click="addPic">
-			<img v-else alt="" @click="addPic">
-		</div>
 		<group>
-	      	<x-input class="name" title="姓名" placeholder="请输入儿童姓名" v-model="body.name"></x-input>
+	      	<x-input class="name" title="姓名" placeholder="请输入儿童姓名" placeholder-align="right" text-align="right" v-model="body.name"></x-input>
 	      	<pixel-selector v-if="endLoad" title="性别" :options="sexList" :value="body.gender" @onSelect="chengeSex"></pixel-selector>
 	      	<datetime v-model="body.birth_date" title="生日" :start-date=startDate :end-date=endDate></datetime>
 	      	<selector ref="defaultValueRef" title="家长身份" v-model="body.relation" :options="list"></selector>
@@ -25,7 +21,6 @@
 		data(){
 			return {
 				body:{
-					head_portrait:'',
 					relation:'',
 					name:'',
 					gender:'',
@@ -57,7 +52,6 @@
 						vm.body.birth_date = vm.formatDate(_data.birth_date)
 						vm.body.gender = _data.gender.toString()
 						vm.body.name = _data.name
-						vm.body.head_portrait = _data.head_portrait
 						vm.body.relation = _data.relation
 					}
 					vm.endLoad = true
@@ -87,10 +81,7 @@
 						if(resp.data.res == 0){
 							vm.$vux.alert.show({
 								title: '提示',
-								content: '修改儿童信息成功',
-								onHide () {
-          console.log('Plugin: I\'m hiding now')
-        }
+								content: '修改儿童信息成功'
 							})
 						}
 					})
@@ -135,37 +126,6 @@
 				}else{
 					return true
 				}
-			},
-			/* @desc:预览图片 */
-			addPic(){
-				let vm = this
-				wx.chooseImage({
-				    count: 1, // 默认9
-				    sizeType: ['compressed'], // 可以指定是原图还是压缩图，默认二者都有
-				    sourceType: ['album', 'camera'],
-				    success: function (res) {
-				        vm.upImg(res.localIds)
-				    }
-				});
-			},
-			/* @desc:上传图片 */
-			upImg(localIds){
-				let vm = this
-				let localId = localIds.shift()
-				wx.uploadImage({
-				    localId: localId, // 需要上传的图片的本地ID，由chooseImage接口获得
-				    isShowProgressTips: 1, // 默认为1，显示进度提示
-				    success: function (res) {
-				        let body = {
-				        	mediaid:res.serverId
-				        }
-				        api.UploadChildImg(body).then(resp=>{
-				        	if(resp.data.res=='0'){
-				        		vm.body.head_portrait = resp.data.data
-				        	}
-				        })
-				    }
-				});
 			}
 		},
 		created(){
@@ -174,11 +134,20 @@
 	}
 </script>
 <style lang='scss'>
-	@import './scss/fn';
 	.baby-info{
 		height: 100%;
 		width: 100%;
-		background: #fff;
-		@include baby-info;
+		color: #666;
+
+		.vux-no-group-title{
+			margin-top: 0.2rem; 
+			.weui-cell_select .weui-cell__bd{&:after{width: 0.266667rem;height: 0.266667rem;}}
+		}
+		.vux-selector{
+			padding: 3px 0;
+			.weui-cell__bd{position: relative;}
+			select{direction: rtl;color: #999;padding-right: 0.426667rem;}
+		}
+		.vux-selector.weui-cell_select-after { padding: 0 15px; }
 	}
 </style>

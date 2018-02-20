@@ -10,10 +10,6 @@ export function addchild(body){
 	return fetch(baseUrl+'addchild',body)
 }
 
-export function UploadChildImg(body){
-	return fetch(baseUrl+'UploadChildImg',body)
-}
-
 export function getMineAss(body){
 	// return fetch(jsonUrl+'static/json/myAss.json')
 	return fetch(baseUrl+'QryMyEvaluation',body)

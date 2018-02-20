@@ -3,7 +3,7 @@
 	<div class="baby-list">
 		<group>
 			<cell :title="baby.name" is-link @click.native="goDetail(baby)" v-for="baby in babyList" :key="baby.child_id">
-				<img slot="icon" :src="baby.head_portrait">
+				<span slot="icon" class="icon iconfont icon-baobeishuo"></span>
 			</cell>
 		</group>
 		<div class="btn-container">
@@ -54,7 +54,16 @@
 		background-color: #fff;position: relative;
 		.vux-no-group-title{
 			margin-top: 0; 
-			.weui-cell img{ width: 0.8rem;display: block;margin-right: 0.4rem; }
+			// .weui-cell img{ width: 0.8rem;display: block;margin-right: 0.4rem; }
+			.weui-cell{
+				.iconfont {
+					margin-right: 0.3rem;
+					font-size: 27px !important;
+				}
+				.icon-baobeishuo{
+					color: #feb000;
+				}
+			}
 		}
 		.add{
 			display: flex;align-items: center;padding: 0.266667rem 0.4rem;
