@@ -49,8 +49,3 @@ export function qryEvaluationByChildId(body){
 export function qryCoupon(body){
 	return fetch(baseUrl + 'QryCoupon',body)
 }
-
-/* @desc:使用优惠码 */
-export function useCoupon(body){
-	return fetch(baseUrl + 'UseCoupon',body)
-}

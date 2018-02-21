@@ -5,7 +5,7 @@
 			<div class="img-wrap vux-1px-b">
 				<img :src="assInfo.picture" alt="">
 			</div>
-			<div class="ass-attr vux-1px-b">
+			<div class="ass-gen">
 				<p class="title">{{assInfo.name}}</p>
 				<div class="attrs text-gray">
 					<span>{{assInfo.maxIndex}}道精选问题</span>
@@ -19,13 +19,13 @@
 					测评详情
 				</p>
 				<div class="detail" v-html="assInfo.details"></div>
-			</div>
-			<div class="ass-pdf activeBg" @click="getPDF">
-				<span class="icon iconfont icon-pdf"></span>
-				<p>点击查看报告样例</p>
-			</div>
+				<div class="ass-pdf" @click="getPDF">
+					<span class="icon iconfont icon-pdf"></span>
+					<p>点击查看报告样例</p>
+				</div>
+			</div>			
 		</div>
-		<div class="ass-btn" @click="goNext">下一步</div>
+		<div class="ass-btn vux-1px-t" @click="goNext">下一步</div>
 	</div>
 </template>
 <script>
@@ -103,12 +103,11 @@
 	@import '../../../static/lib/css/base/variable/base-color.scss';
 	.ass-detail{
 		.p-com-wrapper{
-			background-color: #fff;
-			color: #666;
 			height: calc(100% - 1.2rem);
 		}
 		.ass-info{
 			.img-wrap{
+				background: #fff;
 				height: 4rem;
 				padding-top: 0.3rem;
 				text-align: center;
@@ -116,12 +115,29 @@
 					height: 3.4rem;
 				}
 			}
-			.ass-attr{
-				padding: 0.133333rem 0.266667rem 0.4rem;
+			.ass-gen{
+				background: #fff;
+				padding: 0.3rem 0.266667rem 0.3rem;
 				.title{
 					text-align: center;
 					font-weight: bold;
-					font-size: 0.373333rem;
+					font-size: 0.4rem;
+				}
+				.attrs{
+					display: flex;
+					justify-content: space-between;
+					padding-top: 0.4rem;
+					font-size: 0.346667rem;
+				}
+			}
+			.ass-attr{
+				background: #fff;
+				margin-top: 0.2rem;
+				padding: 0.3rem 0.266667rem 0.4rem;
+				.title{
+					text-align: center;
+					font-weight: bold;
+					font-size: 0.4rem;
 					.icon-flag{
 						font-weight: normal;
 						position: relative;
@@ -131,32 +147,26 @@
 						}
 					}
 				}
-				.attrs{
-					display: flex;
-					justify-content: space-between;
-					padding-top: 0.2rem;
-					font-size: 0.346667rem;
-				}
 				.detail{
-					padding-top: 0.2rem;
+					padding-top: 0.3rem;
 					font-size: 0.346667rem;
 				}
-			}
-			.ass-pdf{
-				text-align: center;
-				padding: 0.266667rem 0;
-				width: 5rem;
-				margin:0 auto;
-				.icon-pdf{
-					font-size: 1.6rem;
-					color: #ff5562;
+				.ass-pdf{
+					text-align: center;
+					padding: 0.266667rem 0;
+					width: 5rem;
+					margin:0 auto;
+					.icon-pdf{
+						font-size: 1.6rem;
+						color: #ff5562;
+					}
+					p{
+						font-size: 0.4rem;
+						padding-top: 0.266667rem;
+						color: #565656;
+					}
 				}
-				p{
-					font-size: 0.4rem;
-					padding-top: 0.266667rem;
-					color: #565656;
-				}
-			}
+			}			
 		}
 		.ass-btn{
 			position: absolute;

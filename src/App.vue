@@ -31,18 +31,17 @@ export default {
 </script>
 
 <style lang="less">
-@import '~vux/src/styles/1px.less';
-html,body,#app {
-	height:100%;
-  background:#f2f2f2;
-  
-}
+  @import '~vux/src/styles/1px.less';
+  html,body,#app {
+    height:100%;
+    background:#ebebeb;    
+  }
       .router-view {
         width: 100%;
         height:100%;
         margin:0 auto;
       }
-      .pixel-pop-out-enter-active,
+    .pixel-pop-out-enter-active,
     .pixel-pop-out-leave-active,
     .pixel-pop-in-enter-active,
     .pixel-pop-in-leave-active {

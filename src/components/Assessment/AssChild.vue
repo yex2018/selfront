@@ -2,8 +2,9 @@
 <template>
 	<div class="ass-child">
 		<div class="tip">
+			<divider>测评须知</divider>
 			<ul>
-				<li>测试中的选项没有对错之分，请基于儿童<span class="text-green">最近2个月内</span>的行为表现填写</li>
+				<li>测试中的选项没有对错之分，请基于儿童<strong class="text-green">最近2个月内</strong>的行为表现填写</li>
 				<li>如果有些行为没有观察到或者不确定，根据您对儿童的了解，请填写您认为<strong class="text-green">最可能</strong>的表现</li>
 				<li>请选择需要进行测评的儿童，并确认儿童的<strong class="text-green">生日</strong>和<strong class="text-green">性别</strong>信息，因为报告结果会根据您填写的儿童信息，自动与同年龄段以及同性别的儿童进行比对。如果信息有误，将<strong class="text-green">影响报告结果</strong>。<a class="text-blue" @click="goDetail">修改儿童信息请点这里></a></li>
 			</ul>
@@ -14,15 +15,14 @@
 				<cell title="性别" :value="child.gender"></cell>
 				<cell title="生日" :value="child.birth_date"></cell>
 			</group>
-			<div v-if="isFree=='0'" class="ass-btn" @click="commit">开始测试</div>
+			<div v-if="originalPrice=='0'" class="ass-btn" @click="commit">开始测试</div>
 			<div v-else class="price-wrap">
-				<span class="price vux-1px-t">{{isFree}}元</span>
+				<span class="price vux-1px-t">{{originalPrice}}元</span>
 				<span class="ass-btn1" @click="buyAss">立即购买</span>
 			</div>
 		</div>
-		
 		<div>
-			<popup v-model="isShow">
+			<popup v-model="showPopup">
 				<div class="popup">
 					<div>
 						<group>
@@ -34,8 +34,8 @@
 					</div>
 					<div style="padding-top:10px;">
 						<group>
-							<x-input title="优惠码" type="text" :show-clear="false" :max="8" placeholder="请输入8位优惠码" v-model="coupon">
-								<x-button slot="right" type="primary" mini @click.native="updatePrice">使用</x-button>
+							<x-input title="优惠码" type="text" :show-clear="false" :max="8" placeholder="请输入8位优惠码" v-model="couponCode">
+								<x-button slot="right" type="primary" :disabled="couponApplied" mini @click.native="updatePrice">使用</x-button>
 							</x-input>
 						</group>
 					</div>
@@ -45,13 +45,13 @@
 				</div>
 			</popup>
 
-			<toast v-model="isShowSuccess" type="success" width="15em">{{showMsg}}</toast>
-			<toast v-model="isShowText" type="text" width="15em">{{showMsg}}</toast>	
+			<toast v-model="showToastSuccess" type="success" width="15em">{{toastMsg}}</toast>
+			<toast v-model="showToastText" type="text" width="15em">{{toastMsg}}</toast>	
 		</div>		
     </div>
 </template>
 <script>
-	import {Group,Cell,Selector,XButton,Popup,XInput,Toast} from 'vux'
+	import {Group,Cell,Selector,XButton,Popup,XInput,Toast,Divider} from 'vux'
 	import * as assApi from '../../api/assessmentApi'
 	import * as courseApi from '../../api/courseApi'
 	import * as mineApi from '../../api/mineApi'
@@ -66,25 +66,25 @@
 					gender:'',
 					birth_date:''
 				},
-				isFree:'',
-				isShow: false,
+				originalPrice:'',
 				discountPrice:'',
-				coupon:'',
-				isShowSuccess:false,
-				isShowText:false,
-				showMsg:'',
-				uid:0
+				couponCode:'',
+				couponApplied: false,
+				showPopup: false,
+				showToastSuccess:false,
+				showToastText:false,
+				toastMsg:'',
 			}
 		},
-		components:{Group,Cell,Selector,XButton,Popup,XInput,Toast},
+		components:{Group,Cell,Selector,XButton,Popup,XInput,Toast,Divider},
 		methods:{
 			/* @desc:初始化页面 */
 			loadInfo(){
 				let vm = this
 				document.title = '测评须知'
 				vm.assName = vm.$route.query.assName
-				vm.isFree = vm.$route.query.price
-				vm.discountPrice = vm.isFree
+				vm.originalPrice = vm.$route.query.price
+				vm.discountPrice = vm.originalPrice
 				vm.getBabyList()
 				vm.configWxjssdk()
 			},
@@ -139,36 +139,30 @@
 					evaluation_id:parseInt(vm.$route.query.evaluation_id),
 					user_id:vm.getMsg('base','userInfo').user_id,
 					child_id:vm.child.child_id,
+					coupon_code:vm.couponApplied ? vm.couponCode : ''
 				}
 
 				assApi.addUserEvaluation(body1).then(resp=>{
 					if(resp.data.res=='0'){
-						vm.uid = resp.data.data.user_evaluation_id
-
 						let body2 = {
-							user_id:vm.getMsg('base','userInfo').user_id,
-							coupon_code:vm.coupon}
-
-						mineApi.useCoupon(body2).then(resp=>{
-							let body3 = {
-								user_evaluation_id:vm.uid,
-								evaluation_id:vm.$route.query.evaluation_id,
-								index:1,
-								maxIndex:vm.$route.query.maxIndex,
-								assName:vm.$route.query.assName,
-								keyname:vm.$route.query.keyname
-							}	
-							vm.$router.push({path:'assQueDetail',query:body3})
-						})						
+							user_evaluation_id:resp.data.data.user_evaluation_id,
+							evaluation_id:vm.$route.query.evaluation_id,
+							index:1,
+							maxIndex:vm.$route.query.maxIndex,
+							assName:vm.$route.query.assName,
+							keyname:vm.$route.query.keyname
+						}
+						vm.$router.push({path:'assQueDetail',query:body2})
 					}
 				})
 			},
 			/* @desc:购买测评 */
 			buyAss(){
 				let vm = this
-				vm.discountPrice = vm.isFree
-				vm.coupon = ''
-				vm.isShow = true
+				vm.discountPrice = vm.originalPrice
+				vm.couponCode = ''
+				vm.couponApplied = false
+				vm.showPopup = true
 			},
 			/* @desc:下单 */
 			getOrder(){
@@ -199,7 +193,6 @@
 			       },
 			       function(res){     
 			           if(res.err_msg == "get_brand_wcpay_request:ok" ) {
-						   	//vm.useCoupon()
 							vm.startEva()
 			           }else{
 			           		vm.$vux.alert.show({
@@ -211,31 +204,31 @@
 			   ); 
 			},
 			updatePrice(){
-				let vm = this , body = {user_id:vm.getMsg('base','userInfo').user_id,coupon_code:vm.coupon}
-				if(vm.coupon){
+				let vm = this , body = {user_id:vm.getMsg('base','userInfo').user_id,coupon_code:vm.couponCode}
+				if(vm.couponCode){
 					mineApi.qryCoupon(body).then(resp=>{
 						if(resp.data.res=='0'){
 							if(resp.data.data!=null){
-								vm.discountPrice = vm.isFree * resp.data.data
+								vm.discountPrice = vm.originalPrice * resp.data.data
 								vm.discountPrice = vm.discountPrice.toFixed(2)
-								vm.showMsg = "优惠码使用成功！"
-								vm.isShowSuccess = true
+								vm.couponApplied = true
+								vm.toastMsg = "优惠码使用成功！"
+								vm.showToastSuccess = true
 							} else {
-								vm.showMsg = resp.data.msg
-								vm.isShowText = true
+								vm.toastMsg = resp.data.msg
+								vm.showToastText = true
 							}
 						}						
 					})
 				} else {
-					vm.showMsg = "请输入优惠码"
-					vm.isShowText = true
+					vm.toastMsg = "请输入优惠码"
+					vm.showToastText = true
 				}
 			},
 			confirmAss(){
-				let vm = this, body = {user_id:vm.getMsg('base','userInfo').user_id,coupon_code:vm.coupon}
+				let vm = this, body = {user_id:vm.getMsg('base','userInfo').user_id,coupon_code:vm.couponCode}
 				if(vm.child.child_id){
 					if(vm.discountPrice < 0.01) {
-						//vm.useCoupon()
 						vm.startEva()
 					} else {
 						vm.getOrder()
@@ -246,12 +239,6 @@
 						content: '请选择儿童'
 					})
 				}
-			},
-			useCoupon(){
-				let vm = this, body = {user_id:vm.getMsg('base','userInfo').user_id,coupon_code:vm.coupon}
-				mineApi.useCoupon(body).then(resp=>{
-					console.log(resp.data.msg)
-				})
 			}
 		},
 		mounted(){
@@ -262,14 +249,20 @@
 <style lang='scss'>
 	@import '../../../static/lib/css/base/variable/base-color.scss';
 	.ass-child{
-		background-color: #fff;
-		.tip{padding: .3rem 0.2rem;font-size: 0.426667rem;line-height: .7rem;
+		.tip{
+			background-color: #fff;
+			color: #666;
+			padding: .3rem 0.2rem;
+			font-size: 0.4rem;
+			line-height: .7rem;
 			a{text-decoration: underline;}
 			ul{margin-left: .6rem;list-style-type:circle;
 				li{margin-top: .3rem;}
 			}
 		}
-		.child-info{		
+		.child-info{
+			background-color: #fff;
+			margin-top: 0.2rem;
 			.vux-no-group-title{
 				margin-top: 0; 
 				.weui-cell_select .weui-cell__bd{&:after{width: 0.266667rem;height: 0.266667rem;}}
@@ -280,8 +273,8 @@
 				select{direction: rtl;color: #999;padding-right: 0.426667rem;}
 			}
 			.vux-selector.weui-cell_select-after { padding: 0 15px; }
-			.weui-cells:after{border-bottom: none;}
-			.weui-cell:before{border-top: none;}
+			// .weui-cells:after{border-bottom: none;}
+			// .weui-cell:before{border-top: none;}
 		}
 		.btn-container{
 			padding:0.8rem 0.426667rem 0;
