@@ -6,8 +6,7 @@ Vue.use(Router)
 const AppBase = resolve => require(['../components/AppBase'],resolve)
 
 const Assessment = resolve => require(['../components/Assessment'],resolve)
-const AssFreeDetail = resolve => require(['../components/Assessment/AssFreeDetail'],resolve)
-const AssPriceDetail = resolve => require(['../components/Assessment/AssPriceDetail'],resolve)
+const AssDetail = resolve => require(['../components/Assessment/AssDetail'],resolve)
 const AssQueDetail = resolve => require(['../components/Assessment/AssQueDetail'],resolve)
 const AssResult =  resolve => require(['../components/Assessment/AssResult'],resolve)
 const AssNoTemplate =  resolve => require(['../components/Assessment/AssNoTemplate'],resolve)
@@ -33,8 +32,7 @@ var routerMaps = [
       {name:'Course',path:'course',component:Course},
       {name:'Mine',path:'mine',component:Mine}
   ]},
-  {name:'AssFreeDetail',path:'/assFreeDetail',component:AssFreeDetail},
-  {name:'AssPriceDetail',path:'/assPriceDetail',component:AssPriceDetail},
+  {name:'AssDetail',path:'/assDetail',component:AssDetail},
   {name:'AssQueDetail',path:'/assQueDetail',component:AssQueDetail},
   {name:'AssResult',path:'/assResult',component:AssResult},
   {name:'AssNoTemplate',path:'/assNoTemplate',component:AssNoTemplate},
