@@ -3,7 +3,11 @@
 	<div class="ass-child">
 		<div class="tip">
 			<divider>测评须知</divider>
-			<ul>
+			<ul v-if="keyName=='qzgxpp'||keyName=='qzgxpca'">
+				<li>本报告的使用目的是帮助你找到最有效的改善点。通过科学的方法，我们可以更加清晰地了解自己应该如何建立有效的亲子关系。因此，您的<strong class="text-green">真实准确</strong>的反馈，对于获得有意义的反馈报告有着至关重要的意义！</li>
+				<li>测试中的选项<strong class="text-green">没有对错</strong>之分，请基于平时与孩子的互动状况填写。<a class="text-blue" @click="goDetail">修改儿童信息请点这里></a></li>				
+			</ul>
+			<ul v-else>
 				<li>测试中的选项没有对错之分，请基于儿童<strong class="text-green">最近2个月内</strong>的行为表现填写</li>
 				<li>如果有些行为没有观察到或者不确定，根据您对儿童的了解，请填写您认为<strong class="text-green">最可能</strong>的表现</li>
 				<li>请选择需要进行测评的儿童，并确认儿童的<strong class="text-green">生日</strong>和<strong class="text-green">性别</strong>信息，因为报告结果会根据您填写的儿童信息，自动与同年龄段以及同性别的儿童进行比对。如果信息有误，将<strong class="text-green">影响报告结果</strong>。<a class="text-blue" @click="goDetail">修改儿童信息请点这里></a></li>
@@ -61,6 +65,7 @@
 			return {
 				children:[],
 				assName:'',
+				keyName:'',
 				child:{
 					child_id:'',
 					gender:'',
@@ -83,6 +88,7 @@
 				let vm = this
 				document.title = '测评须知'
 				vm.assName = vm.$route.query.assName
+				vm.keyName = vm.$route.query.keyname
 				vm.originalPrice = vm.$route.query.price
 				vm.discountPrice = vm.originalPrice
 				vm.getBabyList()

@@ -148,8 +148,22 @@
 					}
 				}
 				.detail{
-					padding-top: 0.3rem;
-					font-size: 0.346667rem;
+					padding-top: 0.4rem;
+					.details-header{
+						color: #404040;
+						font-size: 0.36rem;
+						font-weight: bold;
+					}
+					.details-content{
+						color: $text-gray-color;
+						font-size: 0.346667rem;
+						text-align: justify;
+					}
+					ul{
+						margin-left: .7rem;
+						color: $text-gray-color;
+						list-style-type: disc;
+					}
 				}
 				.ass-pdf{
 					text-align: center;
