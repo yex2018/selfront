@@ -57,6 +57,7 @@
 	import { ProBar } from './assComponent'
 	import { Radio, Group,XHeader } from 'vux'
 	import * as api from '../../api/assessmentApi'
+import { clearTimeout } from 'timers';
 	export default {
 		data(){
 			return {
@@ -74,7 +75,9 @@
 				maxIndex:0,
 				curQuestionIndex:0,
 				curQuestionId:0,
-				curUserQuestionId:0
+				curUserQuestionId:0,
+				isNext: true, //是否可以获取下一题
+				isTimer:false,//是否在延时
 			}
 		},
 		components:{
@@ -90,6 +93,8 @@
 				vm.LoadQuestion()
 			},
 			LoadQuestion() {
+				// 如果isNext为false，进程结束
+				if(!this.isNext) return;
 				let vm = this,body = {
 					user_evaluation_id:vm.$route.query.user_evaluation_id,
 					evaluation_id:vm.$route.query.evaluation_id,
@@ -145,10 +150,13 @@
 			getItem(item,index){
 				let vm = this
 				vm.curIndex = index
-				vm.isNext = true
-				setTimeout(()=>{
-					vm.next()
-				},100)
+				if(!vm.isTimer){
+					vm.isTimer = true
+					setTimeout(()=>{
+						vm.next()
+						vm.isTimer = false
+					},100)
+				}
 			},
 			getItemTwo(item,index){
 				let vm = this
@@ -186,6 +194,8 @@
 				vm.LoadQuestion()
 			},
 			upAnswer(answer){
+				// 若answer为空终止进程
+				if(!answer) return;
 				let vm = this,body = {
 					user_evaluation_id:vm.$route.query.user_evaluation_id,
 					user_question_id:vm.curUserQuestionId,
@@ -194,7 +204,9 @@
 					question_index:vm.curQuestionIndex,
 					answer:answer
 				}
+				vm.isNext = false
 				api.updateevalution(body).then(resp=>{
+					vm.isNext = true
 					if(resp.data.res == '0'){
 						if(vm.curQuestionIndex==vm.maxIndex){
 							/*做完最后一题，等待提交*/
@@ -204,7 +216,7 @@
 							vm.getNext()
 						}
 					}
-				})
+				}).catch(e => {vm.isNext = true})
 			},
 			getNext(){
 				let vm = this

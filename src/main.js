@@ -26,7 +26,7 @@ Vue.use(_)
 
 import { alloyDebug } from './service/alloyDebugService'
 router.beforeEach((to,from,next)=>{
-    // alloyDebug(to,next)
+    //alloyDebug(to,next)
     next()
 })
 
